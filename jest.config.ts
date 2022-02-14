@@ -13,7 +13,7 @@ const config: Config.InitialOptions = {
   testEnvironment: 'node',
   testPathIgnorePatterns: ignoredPatterns,
   watchPathIgnorePatterns: ignoredPatterns,
-  testMatch: [`<rootDir>/__tests__/*.test.ts`],
+  testMatch: [`<rootDir>/**/*.test.ts`],
   moduleDirectories: ['<rootDir>/node_modules'],
 };
 
