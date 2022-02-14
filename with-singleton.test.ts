@@ -1,53 +1,39 @@
-import { createUser, updateUsername } from './functions-without-context'
-import { prismaMock } from './singleton'
+/* MOCKING DON'T WORK WITH THIS PATTERN */
+// It will call proper database
+import { createUser, updateUsername } from './with-singleton'
+import prismaMock from './singleton'
 
-test('should create new user ', async () => {
-  const user = {
-    id: 2,
-    name: 'Smith',
-    email: 'smith@prisma.io',
-    acceptTermsAndConditions: true,
-  }
+const user = {
+	id: 2,
+	name: 'Smith',
+	email: 'smith@prisma.io',
+	acceptTermsAndConditions: true,
+};
 
-  prismaMock.user.create.mockResolvedValue(user)
+describe('Test users with singleton pattern', () => {
+	test('should create new user ', async () => {
+		prismaMock.user.create.mockResolvedValue(user);
+		await expect(createUser(user)).resolves.toEqual(user);
+	});
 
-  await expect(createUser(user)).resolves.toEqual({
-    id: 2,
-    name: 'Smith',
-    email: 'smith@prisma.io',
-    acceptTermsAndConditions: true,
-  })
-})
+	test('should update a users name ', async () => {
+		const updatedUser = {
+			...user,
+			name: 'John Smith',
+		}
 
-test('should update a users name ', async () => {
-  const user = {
-    id: 2,
-    name: 'Smith',
-    email: 'smith@prisma.io',
-    acceptTermsAndConditions: true,
-  }
+		prismaMock.user.update.mockResolvedValue(updatedUser)
+		await expect(updateUsername(updatedUser)).resolves.toEqual(updatedUser)
+	});
 
-  prismaMock.user.update.mockResolvedValue(user)
+	test('should fail if user does not accept terms', async () => {
+		const falseUser = {
+			...user,
+			acceptTermsAndConditions: false
+		};
+		const mockedError = new Error('User must accept terms!');
 
-  await expect(updateUsername(user)).resolves.toEqual({
-    id: 2,
-    name: 'Smith',
-    email: 'smith@prisma.io',
-    acceptTermsAndConditions: true,
-  })
-})
-
-test('should fail if user does not accept terms', async () => {
-  const user = {
-    id: 2,
-    name: 'Smith',
-    email: 'smith@prisma.io',
-    acceptTermsAndConditions: false,
-  }
-
-  prismaMock.user.create.mockRejectedValue(new Error('User must accept terms!'))
-
-  await expect(createUser(user)).resolves.toEqual(
-    new Error('User must accept terms!')
-  )
-})
+		prismaMock.user.create.mockRejectedValue(mockedError)
+		await expect(createUser(falseUser)).rejects.toEqual(mockedError);
+	});
+});
