@@ -10,4 +10,5 @@
 #/.pnp.*
 
 /.editorconfig
+/.vscode
 node_modules
