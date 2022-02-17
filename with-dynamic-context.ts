@@ -1,6 +1,6 @@
 import prisma from './contexts/dynamic-context';
 
-interface CreateUser {
+export interface CreateUser {
   name: string;
   email: string;
   acceptTermsAndConditions: boolean;
