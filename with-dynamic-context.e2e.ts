@@ -1,6 +1,8 @@
 import prisma from './contexts/dynamic-context';
+import secondPrisma from './contexts/dev';
 import { createUser, updateUsername } from './with-dynamic-context';
 import { CreateUser } from './with-dynamic-context';
+import { PrismaClient } from '@prisma/client';
 
 const e2eTest = async () => {
   try {
@@ -33,6 +35,11 @@ const e2eTest = async () => {
     }
 
     console.log(`User deleted 🐈‍⬛`);
+
+    console.log('Check if prisma is singleton');
+    prisma === secondPrisma && prisma !== new PrismaClient()
+      ? console.log('🚀 YES')
+      : console.log('🚫 NO');
   } catch (error) {
     console.error(error);
     process.exit(1);
