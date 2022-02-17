@@ -1,4 +1,3 @@
-import { MockContext, Context, createMockContext } from './contexts/test';
 import { createUser, updateUsername } from './with-dynamic-context';
 import prisma from './contexts/dynamic-context';
 import { PrismaClient } from '@prisma/client';
