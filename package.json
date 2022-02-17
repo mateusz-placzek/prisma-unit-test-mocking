@@ -5,6 +5,10 @@
     "@prisma/client": "^3.5.0",
     "jest": "^27.5.1"
   },
+  "scripts": {
+    "test": "jest",
+    "test:dynamic-context-e2e": "ts-node ./with-dynamic-context.e2e.ts"
+  },
   "devDependencies": {
     "@types/jest": "^27.4.0",
     "@types/node": "^17.0.17",
